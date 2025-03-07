@@ -1,2 +1,11 @@
-fastapi
+langchain-core
+pydantic
+openai
+python-dotenv
+dotenv
+langchain_openai
+colorama
+sqlmodel
+typing_extensions
 uvicorn
+fastapi

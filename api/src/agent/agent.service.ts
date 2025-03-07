@@ -9,7 +9,10 @@ export class AgentService {
     try {
       console.log(this.agentUrl);
 
-      const response = await axios.get(`${this.agentUrl}/process`);
+      const response = await axios.post(`${this.agentUrl}/request`, {
+        message: 'Hello from API',
+      });
+
       return response.data;
     } catch (error) {
       console.error('Error communicating with Agent:', error);
