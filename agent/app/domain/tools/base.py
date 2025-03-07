@@ -1,8 +1,8 @@
 from typing import Callable, Type, Union
 
+from app.domain.tools.utils import convert_to_openai_tool
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel
-from tools.utils import convert_to_openai_tool
 
 
 class ToolResult(BaseModel):

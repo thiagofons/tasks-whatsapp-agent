@@ -1,14 +1,16 @@
 import os
 
+from app.persistance.models import *
+from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine
 
-from database.models import *
+load_dotenv()
 
 # local stored database
-DATABASE_URL = r"sqlite:///app.db"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # in-memory database for testing
-TEST_DATABASE_URL = "sqlite:///test.db"
+TEST_DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL, echo=False) \
     if os.getenv("ENV") != "test" else create_engine(TEST_DATABASE_URL, echo=False)

@@ -1,30 +1,27 @@
 import colorama
-from agents.task import TaskAgent
-from agents.utils import parse_function_args
+from app.domain.agents.task import TaskAgent
+from app.domain.agents.utils import parse_function_args
 from openai import OpenAI
 
-SYSTEM_MESSAGE = """
-You are a helpful assistant.
+SYSTEM_MESSAGE = """You are a helpful assistant.
 Role: You are an AI Assistant designed to serve as the primary point of contact for users interacting through a chat interface. 
 Your primary role is to understand users' requests related to database operations and route these requests to the appropriate tool.
 
 Capabilities: 
-You have access to a variety of tools designed for CRUD operations on a set of predefined tables in a database. 
+You have access to a variety of tools designed for Create, Read operations on a set of predefined tables in a database. 
 
 Tables:
 {table_names}
 """
 
-NOTES = """
-Important Notes:
+NOTES = """Important Notes:
 Always confirm the completion of the requested operation with the user.
 Maintain user privacy and data security throughout the interaction.
-If a request is ambiguous or lacks specific details, ask follow-up questions to clarify the user's needs.
-"""
+If a request is ambiguous or lacks specific details, ask follow-up questions to clarify the user's needs."""
 
 
 PROMPT_EXTRA = {
-    "table_names": "tasks"
+    "table_names": "expense, revenue, customer"
 }
 
 class RoutingAgent:
@@ -86,6 +83,10 @@ class RoutingAgent:
         self.step_history.append(response.choices[0].message)
         self.to_console("RESPONSE", response.choices[0].message.content, color="blue")
         tool_kwargs = parse_function_args(response)
+        if not getattr(response.choices[0].message, "tool_calls"):
+            self.to_console("Tool Name", "None")
+            self.to_console("Tool Args", tool_kwargs)
+            return response.choices[0].message.content
         tool_name = response.choices[0].message.tool_calls[0].function.name
         self.to_console("Tool Name", tool_name)
         self.to_console("Tool Args", tool_kwargs)

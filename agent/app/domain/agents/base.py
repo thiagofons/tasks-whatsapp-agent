@@ -1,9 +1,15 @@
+import os
+
 import colorama
-from agents.utils import parse_function_args, run_tool_from_response
+from app.domain.agents.utils import parse_function_args, run_tool_from_response
+from app.domain.tools.base import Tool, ToolResult
 from colorama import Fore
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic.v1 import BaseModel
-from tools.base import Tool, ToolResult
+
+load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
 class StepResult(BaseModel):
@@ -35,7 +41,7 @@ class OpenAIAgent:
     def __init__(
             self,
             tools: list[Tool],
-            client: OpenAI = OpenAI(),
+            client: OpenAI = OpenAI(api_key=openai_api_key),
             system_message: str = SYSTEM_MESSAGE,
             model_name: str = "gpt-3.5-turbo-0125",
             max_steps: int = 5,
