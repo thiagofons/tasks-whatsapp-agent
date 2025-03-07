@@ -3,6 +3,7 @@ import os
 from typing import BinaryIO
 
 import requests
+from app.domain.agents.agent import agent as ai_agent
 from app.schema import Audio, User
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -112,8 +113,8 @@ def send_whatsapp_message(to, message, template=True):
 
 
 def respond_and_send_message(user_message: str, user: User):
-    agent = None
-    response = agent.run(user_message, user.id)
+    agent = ai_agent
+    response = ai_agent.run(user_message, user.id)
     send_whatsapp_message(user.phone, response, template=False)
     print(f"Sent message to user {user.first_name} {user.last_name} ({user.phone})")
     print(f"Message: {response}")
