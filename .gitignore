@@ -1,0 +1,9 @@
+# virtual environments
+.venv
+
+# env files
+.env
+.env.local
+
+# package-lock files
+package-lock.json
